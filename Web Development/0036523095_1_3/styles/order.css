@@ -1,0 +1,57 @@
+.order-gallery{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    margin-bottom: 20px
+}
+
+.order-gallery-element{
+    justify-self: center;
+} 
+
+.order-gallery-element-image{
+    width: 200px;
+    height: 200px;
+    object-fit: cover
+    
+}
+
+.wide-container{
+    width: 100%;
+}
+
+.card-container{
+    margin: 0px auto 0px auto;
+    width: 200px;
+    border: 1px solid  #e0aacd;
+    border-radius: 1%;
+}
+
+.card-container-top{
+    height: 100px;
+}
+
+.card-container-bottom{
+    padding-bottom: 0.5em;
+    padding-top: 1em;
+}
+
+.card-container-picture{
+    height: 100px;
+    margin: 0px;
+}
+
+.card-button{
+    border-radius: 8%;
+    background-color: #e0aacd;
+    color: #313131;
+    display: inline-block;
+    padding: 0.3em 0.3em;
+}
+
+.card-normal-text{
+    font-size: 0.8em;
+}
+
+.small-margin-text{
+    margin: 0.1em 0em 0.1em 0em;
+}
