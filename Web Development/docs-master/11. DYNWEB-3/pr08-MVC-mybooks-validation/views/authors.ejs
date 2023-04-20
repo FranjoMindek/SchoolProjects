@@ -1,0 +1,21 @@
+<!DOCTYPE>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link href="https://fonts.googleapis.com/css?family=Baloo+2&display=swap" rel="stylesheet"> 
+    <link rel='stylesheet' href='/styles/site.css' />
+  </head>
+<body>
+  <% for (author of authors) { %>
+    <h3> <%= author %></h3>
+    <ol>
+        <li>id: <%= author.id %>
+        <li>firstName: <%= author.firstName %>
+        <li>lastName: <%= author.lastName %>
+        <li>DOB: <%= author.DOB %>
+        <li>gender: <%= author.gender %>
+    </ol>
+  <% } %>
+  <a href="/authors/add">Add author</a>
+</body>
+</html>

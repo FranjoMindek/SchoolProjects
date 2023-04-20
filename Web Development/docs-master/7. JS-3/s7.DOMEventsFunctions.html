@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Async DOMEvents</title>
+</head>
+<body>
+    <button id="btn">Call click event handler</button> 
+    <script>
+        function rightClickFunction(){
+           alert("Someone right-clicked me!");
+        }    
+        let btn  = document.getElementById("btn");
+        btn.onclick = function() { alert("Someone clicked me!"); };
+        btn.oncontextmenu = rightClickFunction;
+        setTimeout(() => {
+           alert("This appears 5 secs after the page has loaded");
+        }, (5000));
+    </script>  
+</body>
+</html>

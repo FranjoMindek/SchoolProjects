@@ -1,0 +1,8 @@
+create or replace view gravitiranje AS
+select 
+	row_number() over() as id,
+	name,
+	population,
+	geom
+from places
+where population > 30000

@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"hr.fer.zemris.apuw.lab1fm.controller"}];updateSearchResults();

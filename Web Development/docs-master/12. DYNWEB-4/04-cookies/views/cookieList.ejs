@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <table width="80%" border>
+        <tr><th>name</th><th>value</th></tr>
+    <% for (c in cookies) {%>
+        <tr><td><%= c %></td><td><%= cookies[c] %></td></tr>
+    <% } %>
+    </table>
+  </body>
+</html>

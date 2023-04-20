@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <style>
+    div {
+      border: 1px solid black;
+      background: #ccc;
+      font-size: 32px;
+    }
+    
+    div.container {
+      margin: 25px 25px;
+      padding: 5px;
+      background: unset;
+      /* position: relative; */
+    }
+    
+    div.lego {
+      width: 177px;
+      height: 100px;
+    }
+    
+    div.relative {
+      position: relative;
+      top: -50px;
+      left: 50px;
+    }
+    
+    div.absolute {
+      position: absolute;
+      top: 0px;
+      right: 10px;
+    }
+    
+    div.fixed {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="lego">static1</div>
+    <div class="lego">static2</div>
+    <div class="lego relative">relative</div>
+    <div class="lego absolute">absolute</div>
+    <div class="lego fixed">fixed</div>
+  </div>
+
+
+</body>
+
+</html>

@@ -1,0 +1,51 @@
+1.
+
+TCP - saljemo syn, dobivamo syn+ack ako ima ili rst ako nema, ako nema nikakvog odgovora filtar
+UDP - saljemo prazan UDP, ako nema dobivamo ICMP poruku, inace nema odgovora, 
+      kako je UDP nesiguran potrebno visestruko slanje da budemo sigurni da nismo izgubili pakete, brzina ICMP poruka također ograničena
+
+2.
+
+TCP SYN     - ceka samo syn+ack ili rst, ne uspotavlja potpunu vezu, ne odgovara serveru
+TCP connect - uspostavlja vezu u potpunosti te je odmah prekine, RST ako ne postoji
+
+Zrtva TCP connect skeniranja bi imala puno zavrsenih veza, dok bi zrtva TCP syn skeniranja imalo puno poluotvorenih veza gdje se ceka odgovor od korisnika
+
+3. 
+
+Napadac salje echo zahtjev koji kao izvorisnu adresu ima zrtvu a odredisnu adresa je broadcast adresa neke mreze. Takozvani smurf napad.
+
+npr.
+izvorisna: 10.0.1.10
+odredisna: 10.0.1.255
+
+4.
+
+IP spoofing - slanje IP datagrama s laznom adresom posiljatelja
+Mozemo zlouporabiti npr ako zelimo raditi DDoS napad tako sto koristimo ip adresu koju primatelj smatra sigurnom, tj. ne filtrira ju.
+
+5.
+
+DDoS - ili distributed denial of service je napad kojim se poslužitelju onemogučuje normalan rad iscrpljenjem resursa.
+Jedna inačica može biti npr gdje poslužitelj overloadamo zahtjevima (što kompleksniji zahtjev to efikasniji DDoS) čime se onemogučuje pristup bilo kojem drugom korisniku tom serveru.
+Izvor napada je najcesce racunala unutar botneta.
+
+6.
+
+CA - certificate authority - izdavatelj certifikata koji izdaje i digitalno potpisuje certifikat neke druge organizacije. To je napravljeno pomoću privatnog ključa samog CA.
+
+7.	
+
+Kako ARP radi na principu broadcast adresa nakon koje ćega odgovor odgovarajuće IP adrese, ranjivost je ta što možemo u slučaju kada žrtva radi ARP broadcast na njega odgovoriti prije stvarnog odredišta.
+Tada sav promet namijenjen odredisnoj IP adresi dolazi do napadača.
+
+8.
+
+DMZ - demilitazirana zona. Kada imamo privatno mrežu a želimo dopustiti pristup s interneta prema poslužitelju našu privatnu mrežu dijelimo na 2 dijela gdje jedna dio ostaje privatan (dostupan mu je pristup samo iz DMZ-a), a drugi postaje DMZ.
+DMZ-u se dopušta pristup iz interneta. Između DMZ i privatne i DMZ i interneta nalazi se firewall.
+
+9.
+
+Pomocu ssh osiguravamo integritet, tajnost i autentifikaciju.
+Radi se obostrana autentifikacija pomoću korištenja para ključeva.
+

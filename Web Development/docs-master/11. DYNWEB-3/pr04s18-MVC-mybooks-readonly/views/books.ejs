@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css' />
+  </head>
+<body>
+  <h1>My books</h1>
+  <hr>
+  <ol>
+  <% for (let book of books) { %>
+    <li> <%= book.title %>
+      <ul>
+        <li>Author: <a href="/author/<%= book.author.id %>"><%= book.author %></a></li>
+        <li>Language: <%= book.language %></li>
+        <li>Publisher: <%= book.publisher %></li>
+        <li>ISBN: <%= book.ISBN %></li>
+      </ul>
+    </li>
+  <% } %>
+  <ol>
+</body>
+</html>

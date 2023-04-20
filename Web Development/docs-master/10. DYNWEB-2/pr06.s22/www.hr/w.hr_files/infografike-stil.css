@@ -1,0 +1,61 @@
+/*Infografike*/
+
+.infographic-container {
+    background-size: cover;
+    color: white;
+    position: relative;
+}
+
+.infographic-wrapper {
+    margin: 0 40% 0 20%;
+}
+
+.infographic-header {
+    border-bottom: 2px solid white;
+    min-height: 250px;
+}
+
+.infographic-title-sm {
+    text-transform: uppercase;
+    font-size: 20px;
+    padding-top: 5%;
+}
+
+.infographic-title-lg {
+    font-size: 50px;
+    padding-top: 20%;
+}
+
+.infographic-title-md {
+    font-size: 40px;
+    padding-top: 20%;
+}
+
+.infographic-body {
+    padding-top: 5%;
+    padding-bottom: 10%;
+    font-size: 20px;
+}
+
+.infographic-serif-font {
+    font-family: 'Times New Roman', serif;
+}
+
+.infographic-text-lg {
+    font-size: 36px !important;
+}
+
+@media (max-width: 768px) {
+    .infographic-container {
+        background-size: cover !important;
+    }
+    .infographic-wrapper {
+        margin: 0 auto;
+        max-width: 90%;
+    }
+}
+
+li.item.active a{
+    background: none !important;
+    color: #00ffff !important;
+}

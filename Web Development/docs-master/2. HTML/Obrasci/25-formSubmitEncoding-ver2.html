@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="hr">
+  <head><meta charset="UTF-8"><title>Online pizzerija!</title></head>
+  <body>
+    <form action="/processForm.php" enctype="text/plain" method="GET">
+      <fieldset><legend>Tekst</legend>
+          <label>Ime i prezime: <input type="text" name="cust" size="30" required></label><br>
+          <label>Adresa: <input type="text" name="address" size="30" required></label><br>
+          <label>Telefon: <input type="tel" name="tel" required></label><br>
+          <label>Šifra za popust: <input type="password" name="secret"></label><br>
+      </fieldset>
+      <fieldset><legend>Vrsta pizze</legend>
+        <label><input type="radio" name="role" value="margarita">Margarita</label><br>
+        <label><input type="radio" name="role" value="mijesana" checked>Miješana</label><br>
+        <label><input type="radio" name="role" value="diavola">Diavola</label><br>
+      </fieldset>
+      <fieldset><legend>Dodatci</legend>
+        <label><input type="checkbox" name="sir" value="da">sir</label><br>
+        <label><input type="checkbox" name="masline" value="da" >masline</label><br>
+        <label><input type="checkbox" name="feferoni" value="da" checked disabled>feferoni</label><br>
+      </fieldset>
+      <p>Debljina tijesta:
+        <select name="tijesto"> 
+          <option value="tanko" selected>tanko tijesto</option>
+          <option value="debelo">debelo tijesto</option>
+        </select>
+      </p>
+      <p><label><input type="checkbox" name="" value="bezimeni" checked>zapamti me</label></p>
+      <input type="submit" name="narudžba" value="Naruči">
+      <input type="submit" name="hitna narudžba" value="Naruči bilo što, umirem od gladi">
+      <input type="reset" name="brisanje" value="Odustani">
+    </form>
+  </body>
+</html>

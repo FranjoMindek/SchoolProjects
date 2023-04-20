@@ -1,0 +1,50 @@
+[
+    {
+      "title": "Čarobni štapić",
+      "price": 55,
+      "description": "Ovaj čarobni štapić ima moć da vam ostvari sve vaše želje. Samo zaželite i vaša misao će postati stvarnost. No pazite, štapić može interpretirati vaše želje kako god poželi.",
+      "svg": "wand.svg"
+    },
+    {
+      "title": "Jako udobna fotelja",
+      "price": 101,
+      "description": "Naime legenda kruži da je ova fotelja toliko ugodna da više nikada nećete htjeti sjediti. Nažalost neki su na teži način otkrili da je ova legenda ipak istina. Fotelja je toliko primamljiva da sam i ja nažalost u svojoj mladosti nasjeo na nju. I dan danas se s nje nisam ustao.",
+      "svg": "armchair-2.svg"
+    },
+    {
+      "title": "Jako mračne naočale",
+      "price": 5,
+      "description": "Ove naočale su mrak. Zapravo su toliko mračne da kroz njih ne vidite ništa osim tame.",
+      "svg": "sunglasses.svg"
+    },
+    {
+      "title": "Drevna piramida",
+      "price": 314.159,
+      "description": "Ova drevna piramida je zaista drevna. Drevna toliko da je zapravo plod vanzemaljske rase reptila. Jer stvarno kako inače opisati nastanak ovakvog artefakta iz tog vremena. Njegova sposobnost ti omogućuje da znaš zadnju znamenku broja PI.",
+      "svg": "pyramid.svg"
+    },
+    {
+      "title": "Čarobne karte",
+      "price": 44,
+      "description": "Ovaj špil karata je magičan! Kako? Sigurno se pitaš. Naime ovaj špil karata omogućuje ti da uvijek izvučeš jednu te istu kartu. Kako? Nije bitno! Također omogućuje predviđanje budućnosti ali to je manje bitno. ",
+      "svg": "play-card.svg"
+    },
+    {
+      "title": "Modna kapa",
+      "price": 420,
+      "description": "Nošenjem ove kape dobiva se nadnaravna moć bivanja nezamijećen. Naime njenim nošenjem ljudi te toliko podsvjesno izbjegavaju da zapravo niti ne registriraju postojanje tebe kao osobe. Zaista opasna kapa.",
+      "svg": "brand-redhat.svg"
+    },
+    {
+      "title": "Kruh sa 7 kora",
+      "price": 77,
+      "description": "Ovaj kruh ima 7 kora no ipak je mekan. Živući paradoks ovog svijeta. Tkogod pojede ovaj kruh također paradoksira svoju glad. Tvoje tijelo će ostati u stanju neprestane gladi i nepotrebe za objedom.",
+      "svg": "baguette.svg"
+    },
+    {
+      "title": "Zvonasto zvono opisano normalnom krivuljom",
+      "price": 88,
+      "description": "Ovo zvono u obliku normalne krivulje funkcionira kao zvono. No zapravo i ne zato što ima posebnu funkcionalnost. Naime tkogod da zazvoni ovo zvono daleko ga čuje.",
+      "svg": "bell.svg"
+    }
+]

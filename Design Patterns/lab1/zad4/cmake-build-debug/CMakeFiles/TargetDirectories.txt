@@ -1,0 +1,3 @@
+/home/mindek/Faks/OOUP/lab1/zad4/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/mindek/Faks/OOUP/lab1/zad4/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/mindek/Faks/OOUP/lab1/zad4/cmake-build-debug/CMakeFiles/zad4.dir

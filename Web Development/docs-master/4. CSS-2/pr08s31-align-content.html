@@ -1,0 +1,113 @@
+<html>
+
+<head>
+  <style>
+    .flex-container {
+      list-style: none;
+      border: 2px dashed black;
+      background-color: #EEE;
+      display: flex;
+      flex-flow: row wrap;
+      height: 500px;
+      width: 170px;
+    }
+    
+    li.flex-item {
+      border: 2px solid black;
+    }
+    
+    .flex-item {
+      background: lightblue;
+      width: 50px;
+      height: 50px;
+      line-height: 50px;
+      color: black;
+      font-weight: bold;
+      font-size: 2em;
+      text-align: center;
+    }
+    
+    ul {
+      padding: 0;
+    }
+    
+    li.flex-item:first-child,
+    li.flex-item:nth-child(3) {
+      width: 150px;
+    }
+    
+    h1 {
+      font-family: Iosevka;
+      margin-bottom: 0;
+    }
+  </style>
+
+</head>
+
+<body>
+  <ul style="display:flex; justify-content: space-evenly;">
+    <li>
+      <h1>flex-start</h1>
+      <ul class="flex-container" style="align-content: flex-start;">
+        <li class="flex-item">1</li>
+        <li class="flex-item">2</li>
+        <li class="flex-item">3</li>
+        <li class="flex-item">4</li>
+        <li class="flex-item">5</li>
+      </ul>
+    </li>
+    <li>
+      <h1>flex-end</h1>
+      <ul class="flex-container" style="align-content: flex-end;">
+        <li class="flex-item">1</li>
+        <li class="flex-item">2</li>
+        <li class="flex-item">3</li>
+        <li class="flex-item">4</li>
+        <li class="flex-item">5</li>
+      </ul>
+    </li>
+    <li>
+      <h1>center</h1>
+      <ul class="flex-container" style="align-content: center;">
+        <li class="flex-item">1</li>
+        <li class="flex-item">2</li>
+        <li class="flex-item">3</li>
+        <li class="flex-item">4</li>
+        <li class="flex-item">5</li>
+      </ul>
+    </li>
+    <li>
+      <h1>space-between</h1>
+      <ul class="flex-container" style="align-content: space-between;">
+        <li class="flex-item">1</li>
+        <li class="flex-item">2</li>
+        <li class="flex-item">3</li>
+        <li class="flex-item">4</li>
+        <li class="flex-item">5</li>
+      </ul>
+    </li>
+    <li>
+      <h1>space-around</h1>
+      <ul class="flex-container" style="align-content: space-around;">
+        <li class="flex-item">1</li>
+        <li class="flex-item">2</li>
+        <li class="flex-item">3</li>
+        <li class="flex-item">4</li>
+        <li class="flex-item">5</li>
+      </ul>
+    </li>
+    <li>
+      <h1>space-evenly</h1>
+      <ul class="flex-container" style="align-content: space-evenly;">
+        <li class="flex-item">1</li>
+        <li class="flex-item">2</li>
+        <li class="flex-item">3</li>
+        <li class="flex-item">4</li>
+        <li class="flex-item">5</li>
+      </ul>
+    </li>
+  </ul>
+
+</body>
+
+</html>

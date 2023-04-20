@@ -1,0 +1,68 @@
+<View>
+  <Text name="text" value="$quote"/>
+  <View style="box-shadow: 2px 2px 5px #999; padding: 20px; margin-top: 2em; border-radius: 5px;">
+    <Header value="Choose text emotion"/>
+    <Choices name="emotion" toName="text" choice="multiple" showInLine="true">
+      <Choice value="Admiration"/>
+      <Choice value="Amusement"/>
+      <Choice value="Approval"/>
+      <Choice value="Caring"/>
+      <Choice value="Desire"/>
+      <Choice value="Excitement"/>
+      <Choice value="Gratitude"/>
+      <Choice value="Joy"/>
+      <Choice value="Love"/>
+      <Choice value="Optimism"/>
+      <Choice value="Pride"/>
+      <Choice value="Relief"/>
+      <Choice value="Anger"/>
+      <Choice value="Annoyance"/>
+      <Choice value="Disappointment"/>
+      <Choice value="Disapproval"/>
+      <Choice value="Disgust"/>
+      <Choice value="Embarrassment"/>
+      <Choice value="Fear"/>
+      <Choice value="Grief"/>
+      <Choice value="Nervousness"/>
+      <Choice value="Remorse"/>
+      <Choice value="Sadness"/> 
+      <Choice value="Confusion"/>
+      <Choice value="Curiosity"/>
+      <Choice value="Realization"/>
+      <Choice value="Surpise"/>
+      <Choice value="Neutral"/>
+    </Choices>
+  </View>
+  <View>
+    <Labels name="emotion_span" toName="text">
+      <Label value="Admiration" background="green"/>
+      <Label value="Amusement" background="green"/>
+      <Label value="Approval" background="green"/>
+      <Label value="Caring" background="green"/>
+      <Label value="Desire" background="green"/>
+      <Label value="Excitement" background="green"/>
+      <Label value="Gratitude" background="green"/>
+      <Label value="Joy" background="green"/>
+      <Label value="Love" background="green"/>
+      <Label value="Optimism" background="green"/>
+      <Label value="Pride" background="green"/>
+      <Label value="Relief" background="green"/>
+      <Label value="Anger" background="blue"/>
+      <Label value="Annoyance" background="blue"/>
+      <Label value="Disappointment" background="blue"/>
+      <Label value="Disapproval" background="blue"/>
+      <Label value="Disgust" background="blue"/>
+      <Label value="Embarrassment" background="blue"/>
+      <Label value="Fear" background="blue"/>
+      <Label value="Grief" background="blue"/>
+      <Label value="Nervousness" background="blue"/>
+      <Label value="Remorse" background="blue"/>
+      <Label value="Sadness" background="blue"/>
+      <Label value="Confusion" background="orange"/>
+      <Label value="Curiosity" background="orange"/>
+      <Label value="Realization" background="orange"/>
+      <Label value="Surprise" background="orange"/>
+      <Label value="Neutral" background="gray"/>
+    </Labels>
+  </View>
+</View>

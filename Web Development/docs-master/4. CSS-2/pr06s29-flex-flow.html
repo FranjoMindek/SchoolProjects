@@ -1,0 +1,68 @@
+<html>
+
+<head>
+  <style>
+    .flex-container {
+      list-style: none;
+      border: 1px dashed black;
+      display: flex;
+      flex-flow: column nowrap;
+    }
+    
+    li {
+      border: 2px solid black;
+    }
+    
+    .wrap {
+      flex-wrap: wrap;
+    }
+    
+    .wrap li {
+      background: mediumseagreen;
+    }
+    
+    .wrap-reverse {
+      flex-wrap: wrap-reverse;
+    }
+    
+    .wrap-reverse li {
+      background: orangered;
+    }
+    
+    .flex-item {
+      background: blue;
+      width: 100px;
+      height: 100px;
+      margin: 10px;
+      line-height: 100px;
+      color: white;
+      font-weight: bold;
+      font-size: 2em;
+      text-align: center;
+    }
+  </style>
+
+</head>
+
+<body>
+  <!-- ovaj nasljeđuje od roditelja -->
+  <ul class="flex-container">
+    <li class="flex-item">1</li>
+    <li class="flex-item">2</li>
+    <li class="flex-item">3</li>
+  </ul>
+  <!-- ova dva override wrap od roditelja -->
+  <ul class="flex-container wrap">
+    <li class="flex-item">1</li>
+    <li class="flex-item">2</li>
+    <li class="flex-item">3</li>
+  </ul>
+
+  <ul class="flex-container wrap-reverse">
+    <li class="flex-item">1</li>
+    <li class="flex-item">2</li>
+    <li class="flex-item">3</li>
+  </ul>
+</body>
+
+</html>

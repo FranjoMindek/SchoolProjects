@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"hr.fer.zemris.apuw.lab1fm.controller","l":"CommentController"},{"p":"hr.fer.zemris.apuw.lab1fm.controller","l":"PostController"}];updateSearchResults();

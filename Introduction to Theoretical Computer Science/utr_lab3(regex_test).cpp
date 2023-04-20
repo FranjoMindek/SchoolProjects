@@ -31,7 +31,6 @@ class Automat {
             if(iter != mapaPrijelaza.end()){
                 trenutnoStanje = iter->second.first;
                 string promjenaStoga = iter->second.second;
-                //cout << iter->second.first << " and " << iter->second.second;
                 stog = stog.substr(1);
                 if(promjenaStoga != "$"){
                     stog = promjenaStoga + stog;
@@ -120,7 +119,7 @@ int main() {
     string prijelaz;
     getline(cin, ulazniNiz);
     for(int i = 0; i<3; i++)
-        getline(cin, prihvatljivaStanja); //nepotrebne informacije za rad
+    getline(cin, prihvatljivaStanja); //nepotrebne informacije za rad
     getline(cin, prihvatljivaStanja); //kasnije budemo trazili u ovom string trenutni s regex
     getline(cin, pocStanje);
     getline(cin, pocStog);
@@ -151,7 +150,6 @@ int main() {
             }
             ++itPrijelaza;
         }
-        //cout << kljuc << " " << vrijednost.first << "-" << vrijednost.second << endl;
         automat.unesiPrijelaz(kljuc, vrijednost);
     }
 

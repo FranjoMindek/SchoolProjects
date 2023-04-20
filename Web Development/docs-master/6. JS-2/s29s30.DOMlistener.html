@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <title>Učimo web!</title>
+  <meta charset="UTF-8">
+</head>
+
+<body>
+  <h1>Moja web stranica</h1>
+
+  <p id="tvrdnja" title="tvrdnja"  style="color: green;">
+    Danas je <i>lijep</i> dan.</p>
+  <hr />
+  
+  Idemo svi u prirodu!
+  <br />
+  <button style="height:25px;width:200px"  onclick="changeWeather()">
+    Change weather
+  </button>
+</body>
+
+<script>
+  function changeWeather() {
+    let tvrdnjaPara = document.getElementById("tvrdnja");
+
+    if (tvrdnjaPara.style.color == "green")
+      tvrdnjaPara.style.color = "red";
+    else
+      tvrdnjaPara.style.color = "green";
+
+    if (tvrdnjaPara.innerHTML.indexOf("nije lijep") != -1)
+      tvrdnjaPara.innerHTML = "Danas je <i>lijep</i> dan.";
+    else
+      tvrdnjaPara.innerHTML = "Danas <i>nije lijep</i> dan.";
+
+    tvrdnjaParaSecondSibling = tvrdnjaPara.nextSibling.nextSibling.nextSibling;
+
+    if (tvrdnjaParaSecondSibling.nodeValue == "")
+      tvrdnjaParaSecondSibling.nodeValue = "Idemo svi u prirodu!";
+    else
+      tvrdnjaParaSecondSibling.nodeValue = "";
+  }
+</script>
+</html>

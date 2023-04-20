@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>APUW2</title>
+</head>
+<body>
+
+  <div id="controls">
+    <div id="communication-container">
+      <h3>Choose a communication method:</h3><h3></h3>
+      <form id="communication" action="/" method="post">
+        <input type="radio" id="poll" name="communication" value="poll">
+        <label for="html">Poll</label><br>
+        <input type="radio" id="long-poll" name="communication" value="long-poll">
+        <label for="css">Long poll</label><br>
+        <input type="radio" id="websocket" name="communication" value="websocket">
+        <label for="javascript">Websocket</label> 
+      </form>
+      <button id="communication-button">Send</button>
+    </div>
+    
+
+    <div id="message-container">
+      <form id="message" action="/" method="post">
+        <h3>Message:</h3>
+        <textarea type="text" id="message" name="message" value="The message" cols="60"></textarea><br>
+        <button id="message-button">Send</button>
+      </form>
+    </div>
+</div>
+
+  <ul id="log">
+
+  </ul>
+
+  <script>
+    /*
+    HANDLES POSTING OF STUFF:
+      1. post communication type
+      2. post message
+    */
+    var id = Date.now();
+    var log = document.getElementById("log");
+
+    document.getElementById("communication-button").addEventListener("click", (ev) => {
+      ev.preventDefault();
+      const formEl = document.forms.communication;
+      const formData = new FormData(formEl);
+      const communication = formData.get("communication");
+
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", "http://localhost:3000/communication", true);
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.onload = (ev) => { changeState(communication); }
+
+      const data = {communication, id}
+      const json = JSON.stringify(data);
+
+      xhr.send(json);
+    });
+
+    document.getElementById("message-button").addEventListener("click", (ev) => {
+      ev.preventDefault();
+      const formEl = document.forms.message;
+      const formData = new FormData(formEl);
+      const message = formData.get("message");
+
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", "http://localhost:3000/", true);
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.onload = (ev) => {
+        const li = document.createElement("li");
+        
+        li.appendChild(document.createTextNode(`${new Date().toLocaleTimeString('it-IT')} - Me: ${message}`));
+        li.setAttribute("user", "me");
+        log.appendChild(li);
+      }
+      
+      const data = {id, message}
+      const json = JSON.stringify(data);
+
+      xhr.send(json);
+    });
+  </script>
+
+  <script>
+    /*
+    HANDLES COMMUNICATION TYPE
+    */
+    var previousCommunication;
+    var pollInterval;
+    var longPollXhr;
+    var currentWebsocket;
+
+    function changeState(communication) {
+      console.log("Switching state to " + communication + " from " + previousCommunication);
+
+      // clear leftover 
+      if (previousCommunication === "poll") {
+        clearInterval(pollInterval); 
+        pollInterval = null;
+      } else if (previousCommunication === "long-poll") {
+        longPollXhr.abort();
+        longPollXhr = null;
+      } else if (previousCommunication === "websocket") {
+        currentWebsocket.close();
+      }
+        
+      if (communication === "poll"){
+        pollInterval = setInterval(() => {
+          const xhr = new XMLHttpRequest();
+          xhr.timeout = 500;
+          xhr.responseType = "json";
+          xhr.open("GET", `http://localhost:3000/?id=${id}`, true);
+          xhr.onload = (ev) => {
+            if(xhr.status === 200) {
+              xhr.response.messages.forEach(message=> {
+                const li = document.createElement("li");
+                li.appendChild(document.createTextNode(`${new Date().toLocaleTimeString('it-IT')} - They: ${message}`));
+                li.setAttribute("user", "they");
+                log.appendChild(li);
+              })
+            }
+          }
+          xhr.send();
+        }, 5000);
+      } else if (communication === "long-poll") {
+        const xhr = new XMLHttpRequest();
+        longPollXhr = xhr;
+        xhr.timeout = 0; // no timeout
+        xhr.responseType = "json";
+        xhr.open("GET", `http://localhost:3000/?id=${id}`, true);
+        xhr.onload = (ev) => {
+          if(xhr.status === 200) {
+            xhr.response.messages.forEach(message=> {
+              const li = document.createElement("li");
+              li.appendChild(document.createTextNode(`${new Date().toLocaleTimeString('it-IT')} - They: ${message}`));
+              li.setAttribute("user", "they");
+              log.appendChild(li);
+            })
+          }
+          // TODO: AKO JE POTREBNO NAPRAVITI DA SE PONAVLJA LONG POOL ONDA NESTA NA OVU IDEJU
+          // xhr.open("GET", `http://localhost:3000/?id=${id}`, true);
+          // xhr.send();
+        }
+        xhr.send();
+      } else if (communication === "websocket") {
+        const socket = new WebSocket(`ws://localhost:${id % 65536 < 10024 ? (id + 10024)%65536 : id%65536}/`);
+        currentWebsocket = socket;
+        socket.onmessage = (ev) => {
+          const data = JSON.parse(ev.data);
+          const message = data.message;
+          const li = document.createElement("li");
+          li.appendChild(document.createTextNode(`${new Date().toLocaleTimeString('it-IT')} - They: ${message}`));
+          li.setAttribute("user", "they");
+          log.appendChild(li);
+            
+        }
+      }
+      previousCommunication = communication;
+    }
+  </script>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    #communication-container {
+      background-color: gainsboro;
+      border: 2px solid gray;
+      padding: 0em 1em 1em 1em;
+    }
+
+    #message-container {
+      background-color: gainsboro;
+      border: 2px solid gray;
+      padding: 0em 1em 1em 1em;
+    }
+
+    #controls {
+      display: flex;
+      width: 60%;
+    }
+
+    #communication-button {
+      border-radius: 30%;
+      padding: 0.5em 1em 0.5em 1em;
+      background-color: white;
+      float: right;
+    }
+
+    #message-button {
+      border-radius: 30%;
+      padding: 0.5em 1em 0.5em 1em;
+      background-color: white;
+      float: right;
+    }
+
+    li[user="me"]{
+      background-color: rgb(225 225 225);
+    }
+
+    li[user="they"]{
+      background-color: rgb(245 245 245);
+    }
+
+  </style>
+</body>
+</html>

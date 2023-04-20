@@ -1,0 +1,26 @@
+FORWARD oznčava da se paket dalje prosljeđuje, a INPUT da paket dolazi do samog firewalla, -i -o označavaju ulzani i izlazni interface, dok -s -d prestavljaju source i destination adresu. 
+DROP onzčava da se paket odbacuje. ACCPET onzačava da se paket prihvaća.
+
+
+Anti spoofing smo implementirali tako da:
+$IPT -A FORAWRD -i eth0 -s 10.0.0.1/24 -j DROP
+$IPT -A FORWARD -i eth0 -s 203.0.113.10/24 -j DROP
+blokiramo pakete koji se predstavljaju kao da dolaze DMZ ili LAN (koriste njihove ip adrese) ali zapravo dolaze iz Interneta, što vidimo preko interface.
+
+LAN može svemu pristupiti, LAN se prepoznaje preko eth1 i maske LAN mreže:
+$IPT -A FORWARD -i eth1 -s 10.0.0.1/24 -j ACCEPT
+
+Internet možemo pristupiti samo određenim DMZ funckionalnostima, flitraciju opet radimo preko interface i destination ip adrese za određene protokole:
+$IPT -A FORWARD -i eth0 -d 203.0.113.10 -p tcp --dport 22 -j ACCEPT
+$IPT -A FORWARD -i eth0 -d 203.0.113.10 -p tcp --dport 53 -j ACCEPT
+$IPT -A FORWARD -i eth0 -d 203.0.113.10 -p udp --dport 53 -j ACCEPT
+
+Iz DMZ možemo u LAN samo na host, stavljamo obje ip adrese i navodimo oba interfacea:
+$IPT -A FORWARD -i eth2 -o eth1 -s 203.0.113.10 -d 10.0.0.11 -p tcp --dport 22 -j ACCEPT
+
+DMZ server može samo na port 53 (DNS) ako pristupa Internetu.
+$IPT -A FORWARD -i eth2 -o eth0 -s 203.0.113.10 -p udp --dport 53 -j ACCEPT
+$IPT -A FORWARD -i eth2 -o eth0 -s 203.0.113.10 -p tcp --dport 53 -j ACCEPT
+
+I samo admin može pristupiti firewallu:
+$IPT -A INPUT -i eth1 -s 10.0.0.10 -p tcp --dport 22 -j ACCEPT

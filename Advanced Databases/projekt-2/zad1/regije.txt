@@ -1,0 +1,83 @@
+INSERT INTO "mojeRegije" ("name", engtype_1, type_1, geom)
+SELECT
+	'Big Slavonija' ,
+	z1.engtype_1,
+	z1.type_1,
+	st_union(array[z12.geom, z19.geom, z3.geom, z13.geom, z18.geom])
+FROM
+	hrv_adm1 z1, hrv_adm1 z2, hrv_adm1 z3, hrv_adm1 z4, hrv_adm1 z5, 
+	hrv_adm1 z6, hrv_adm1 z7, hrv_adm1 z8, hrv_adm1 z9, hrv_adm1 z10,
+	hrv_adm1 z11, hrv_adm1 z12, hrv_adm1 z13, hrv_adm1 z14, hrv_adm1 z15, 
+	hrv_adm1 z16, hrv_adm1 z17, hrv_adm1 z18, hrv_adm1 z19, hrv_adm1 z20,
+	hrv_adm1 z21
+WHERE
+	z1.gid = 1 and z2.gid = 2 and z3.gid = 3 and z4.gid = 4 and z5.gid = 5 and 
+	z6.gid = 6 and z7.gid = 7 and z8.gid = 8 and z9.gid = 9 and z10.gid = 10 and 
+	z11.gid = 11 and z12.gid = 12 and z13.gid = 13 and z14.gid = 14 and z15.gid = 15 and 
+	z16.gid = 16 and z17.gid = 17 and z18.gid = 18 and z19.gid = 19 and z20.gid = 20 and
+	z21.gid = 21;
+
+INSERT INTO "mojeRegije" ("name", engtype_1, type_1, geom)
+SELECT
+	'Veliki Zagreb',
+	z1.engtype_1, -- county
+	z1.type_1,
+	st_union(array[z2.geom, z15.geom, z21.geom, z8.geom, z11.geom, z17.geom, z9.geom, z5.geom]) 
+FROM
+	hrv_adm1 z1, hrv_adm1 z2, hrv_adm1 z3, hrv_adm1 z4, hrv_adm1 z5, 
+	hrv_adm1 z6, hrv_adm1 z7, hrv_adm1 z8, hrv_adm1 z9, hrv_adm1 z10,
+	hrv_adm1 z11, hrv_adm1 z12, hrv_adm1 z13, hrv_adm1 z14, hrv_adm1 z15, 
+	hrv_adm1 z16, hrv_adm1 z17, hrv_adm1 z18, hrv_adm1 z19, hrv_adm1 z20,
+	hrv_adm1 z21
+WHERE
+	z1.gid = 1 and z2.gid = 2 and z3.gid = 3 and z4.gid = 4 and z5.gid = 5 and 
+	z6.gid = 6 and z7.gid = 7 and z8.gid = 8 and z9.gid = 9 and z10.gid = 10 and 
+	z11.gid = 11 and z12.gid = 12 and z13.gid = 13 and z14.gid = 14 and z15.gid = 15 and 
+	z16.gid = 16 and z17.gid = 17 and z18.gid = 18 and z19.gid = 19 and z20.gid = 20 and
+	z21.gid = 21;
+
+
+INSERT INTO "mojeRegije" ("name", engtype_1, type_1, geom)
+SELECT
+	'Lika s morem',
+	z1.engtype_1, -- county
+	z1.type_1,
+	st_union(array[z7.geom, z14.geom, z6.geom, z10.geom]) 
+FROM
+	hrv_adm1 z1, hrv_adm1 z2, hrv_adm1 z3, hrv_adm1 z4, hrv_adm1 z5, 
+	hrv_adm1 z6, hrv_adm1 z7, hrv_adm1 z8, hrv_adm1 z9, hrv_adm1 z10,
+	hrv_adm1 z11, hrv_adm1 z12, hrv_adm1 z13, hrv_adm1 z14, hrv_adm1 z15, 
+	hrv_adm1 z16, hrv_adm1 z17, hrv_adm1 z18, hrv_adm1 z19, hrv_adm1 z20,
+	hrv_adm1 z21
+WHERE
+	z1.gid = 1 and z2.gid = 2 and z3.gid = 3 and z4.gid = 4 and z5.gid = 5 and 
+	z6.gid = 6 and z7.gid = 7 and z8.gid = 8 and z9.gid = 9 and z10.gid = 10 and 
+	z11.gid = 11 and z12.gid = 12 and z13.gid = 13 and z14.gid = 14 and z15.gid = 15 and 
+	z16.gid = 16 and z17.gid = 17 and z18.gid = 18 and z19.gid = 19 and z20.gid = 20 and
+	z21.gid = 21;
+
+
+INSERT INTO "mojeRegije" ("name", engtype_1, type_1, geom)
+SELECT
+	'Gospari',
+	z1.engtype_1, -- county
+	z1.type_1,
+	st_union(array[z20.geom, z1.geom, z16.geom, z4.geom]) 
+FROM
+	hrv_adm1 z1, hrv_adm1 z2, hrv_adm1 z3, hrv_adm1 z4, hrv_adm1 z5, 
+	hrv_adm1 z6, hrv_adm1 z7, hrv_adm1 z8, hrv_adm1 z9, hrv_adm1 z10,
+	hrv_adm1 z11, hrv_adm1 z12, hrv_adm1 z13, hrv_adm1 z14, hrv_adm1 z15, 
+	hrv_adm1 z16, hrv_adm1 z17, hrv_adm1 z18, hrv_adm1 z19, hrv_adm1 z20,
+	hrv_adm1 z21
+WHERE
+	z1.gid = 1 and z2.gid = 2 and z3.gid = 3 and z4.gid = 4 and z5.gid = 5 and 
+	z6.gid = 6 and z7.gid = 7 and z8.gid = 8 and z9.gid = 9 and z10.gid = 10 and 
+	z11.gid = 11 and z12.gid = 12 and z13.gid = 13 and z14.gid = 14 and z15.gid = 15 and 
+	z16.gid = 16 and z17.gid = 17 and z18.gid = 18 and z19.gid = 19 and z20.gid = 20 and
+	z21.gid = 21;
+
+SELECT UpdateGeometrySRID('mojeRegije', 'geom', 4326); -- jer nisam prethodno azurirao SRID admin regija
+alter table "mojeRegije" ALTER COLUMN geom TYPE geometry(Geometry, 3765) using ST_Transform(geom, 3765);
+
+-- provjera povrsina
+select *, st_area("mojeRegije".geom) from "mojeRegije";

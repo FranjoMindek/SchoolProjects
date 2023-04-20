@@ -88,7 +88,6 @@ int main(){
     }
 
     //sredi prijelaze
-
     for(auto it = mapaPrijelaza.begin(); it != mapaPrijelaza.end(); ++it){
         for(auto it2 = mapaEpsilonPrijelaza.begin(); it2 != mapaEpsilonPrijelaza.end(); ++it2){
             int pos = it->second.find(it2->first);
@@ -101,7 +100,6 @@ int main(){
     }
 
     //sredi pocetno stanje
-
     for(auto it2 = mapaEpsilonPrijelaza.begin(); it2 != mapaEpsilonPrijelaza.end(); ++it2){
         if(pocetnoStanje.compare(it2->first) == 0){
             pocetnoStanje = pocetnoStanje + "," + it2->second;
@@ -118,7 +116,6 @@ int main(){
 
 
     //sredi ulazne rijeci
-
     vector<string> temp;
     tokenize(ulazneRijeci, "|", temp);
     vector<string> ulazniNizovi[temp.size()];
@@ -129,7 +126,6 @@ int main(){
     }
 
     //printanje
-    
     for(int i = 0; i<temp.size(); i++){
         string trenutnoStanje = pocetnoStanje;
         set<string> stanjaTrenutnog;
@@ -157,30 +153,6 @@ int main(){
         }
         cout << trenutnoStanje << endl;
     }
-
-
-    
-    // cout << endl << "Ulazne rijeci" << endl;
-    // for(int i = 0; i<temp.size(); i++){
-    //     cout << "Niz " << i << " je: ";
-    //     for(auto it = ulazniNizovi[i].begin(); it<ulazniNizovi[i].end(); it++){
-    //         cout << *it << " ";
-    //     }
-    //     cout << endl;
-    // }
-
-    // cout << endl << "Pocetno Stanje" << endl << pocetnoStanje << endl;
-
-    // cout << endl << "Prijelazi" << endl;
-    // for(auto it = mapaPrijelaza.begin(); it != mapaPrijelaza.end(); ++it){
-    //     cout << it->first << " " << it->second << endl << endl;
-    // }
-    
-    // cout << endl << "Epsilon prijelazi" << endl;
-    // for(auto it = mapaEpsilonPrijelaza.begin(); it != mapaEpsilonPrijelaza.end(); ++it){
-    //     cout << it->first << " " << it->second << endl << endl;
-    // }
-    
 
     return 0;
 }

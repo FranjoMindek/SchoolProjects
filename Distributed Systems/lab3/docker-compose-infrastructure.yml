@@ -1,0 +1,30 @@
+version: "3.9"
+services:
+  config-server:
+    image: lab3/config-server
+    ports:
+      - "8888:8888"
+    # expose:
+    #   - 8888
+    environment:
+      - GIT_LOCATION=file://data/config
+    volumes:
+      - C:/Faks/RASUS/lab3/config:/data/config
+    healthcheck:
+      test: "curl --fail --silent http://localhost:8888/actuator/health | grep UP || exit 0"
+      interval: 2s
+      timeout: 2s
+      retries: 3
+      start_period: 8s
+  eureka-server:
+    image: lab3/eureka-server
+    ports:
+      - "8761:8761"
+    depends_on:
+      config-server:
+        condition: service_healthy
+    environment:
+      - CONFIG_HOST=http://config-server:8888/
+    expose:
+      - 8761
+

@@ -1,0 +1,11 @@
+{
+    "name": "demo_http_counter_server",
+    "version": "1.0.0",
+    "description": "Minimalni HTTP server u nodeu, vraca broj pozivanja",
+    "main": "server.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "igor.mekterovic@fer.hr",
+    "license": "MIT"
+}

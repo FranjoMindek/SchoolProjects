@@ -1,0 +1,55 @@
+Simptomi problem:
+    krutost (rigidity) - teško nadograđivanje
+    krhkost (fragility) - lako unošenje suptilnih grešaka
+    nepokretnost (immobility) - teško višestruko korištenje
+    viskoznost (viscosity) - sklonost k slabljenju integriteta programa ???
+
+Krutost - dugi lanci ovisnosti -> domino efekt
+        - lijek: apstrakcija i enkapsulacija
+
+Krhkost - usred ponavljanja
+
+Nepokretnost - pretjerana međuovisnost, potiče ponavljannje
+
+Viskoznost - teško nadograđivanje uz očuvanje konceptualnog integriteta programa
+
+Dinamički polimorfizam - odredište poziva postaje poznato tek u trenutku izvođenja
+                       - nedostaci: sporije izvođenje, nemoguće napraviti inline pozive
+
+Statički polimorfizam - odredište poziva određuje prevoditelj
+                      - nedostaci: promjena predložaka zahtijeva ponovno prevođenje, veći izvršni kod
+                      
+RAII (resource acquisition is initialization) - zauzimanje inicijalizacijom
+    - resurs (datoteku, memoriju..) zauzimamo inicijalizacijom objekta
+    - otpuštanje se zbiva autoamtskim pozivom destruktora
+    -> iznimke ne uzrokuju curenje memorije 
+    - slajd 51 ?
+
+Načela oblikovanja elemenata logičke organizacije:
+    nadogradnja bez promjene - dodavanje funkcionalnost bez utjecaja na postojeći kod
+    liskovino načelo supstitucije - osnovni razredi moraju se moći nadomjestiti izvedenim klasama
+    inverzija ovisnosti - usmjeravanj ovisnosti prema apstraktnim sučeljima
+    jedinstvena odgovornost - komponente modeliraju koncepte koji imaju jasnu odgovornost
+    izdvajanje sučelja - ne tjerati klijente da ovise o onom što ne koriste
+
+NNBP - funkcionalnost komponente možemo proširiti bez mijenjanja njene implementacije
+    - fleksibilnost - nadogradnja ne utječe na klijente
+    - stari kod poziva novi kod!
+    - kompozicija kada polimorfizam nije moguć
+    - nasljeđivanje sučelja kod polimorfizma
+
+LNS - npr tko zna voziti auto zna voziti i Fiat Punto (relacija JE_VRSTA)
+    - izvedeni razredi moraju poštivati ugovore osnovnog razreda (krug - elipsa)
+
+NIO - ovisnosti idu prema apstrakcijama
+    - problem stvaranja objekata konkretnih razreda -> tvornice
+    - injekcija ovisnosti
+
+NJO - programski moduli moraju imati samo 1 odgovornost
+    - oblikovanje ortogonalnog sustava
+    - smanjuje međuovisnost, potiče održive evolucije
+
+NIS - nekoherentnim konceptima (ako ih baš moramo imati) klijenti trebaju pristupati preko izdvojenih sučelja
+    - repcet za višestruko nasljeđivanje (mixin C++, interface Java)
+
+

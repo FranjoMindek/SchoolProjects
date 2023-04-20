@@ -27,7 +27,6 @@ int main(){
         return 0;
     }
     std::cout << "NE";
-    //std::cout << " -> " << " nije procitao cijeli input " << i << "/" << input.size();
     return 1;
 }
 
@@ -42,7 +41,6 @@ void readNonterminal(std::string symbol, std::map<std::string, std::string> &tar
     }
     if(value == target.end()){
         std::cout << output << std::endl << "NE";
-        //std::cout << " -> nema prijelaza";
         exit(2);
     }
     for(unsigned int j = 0; j < value->second.size(); j++){
@@ -52,14 +50,12 @@ void readNonterminal(std::string symbol, std::map<std::string, std::string> &tar
                 i++;
             }else{
                 std::cout << output << std::endl << "NE";
-                //std::count << " -> terminalni znakovi ne pasu"; //tipa kada na treba samo jedan c, a mi pozove prijelaz koji stvara cc 
                 exit(3);
             }
         }else if(chr == '$'){
             continue;
         }else{
             std::string temp (1, chr);
-            //std::cout << "reading nonterminal " << temp << "!!" << std::endl;
             readNonterminal(temp, target);
         }
     }

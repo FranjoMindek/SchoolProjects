@@ -1,0 +1,13 @@
+body {
+    font-family: 'Baloo 2', cursive;
+}
+input, select {
+    font-family: inherit;
+}
+label {
+    width: 100px;
+    display: inline-block;
+}
+div.submitButtons {
+    text-align: center;
+}

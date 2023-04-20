@@ -1,0 +1,17 @@
+create or replace view sume as (
+	select * from landuse where fclass='forest'
+);
+
+-- vrti se predugo ako je pogled, ~45 sekundi
+-- create or replace view zupanijeSume as (
+-- select hrv_adm1.gid, hrv_adm1.name_1, hrv_adm1.geom,  sum(st_area(st_intersection(sume.geom, hrv_adm1.geom)))/st_area(hrv_adm1.geom) omjer
+-- from hrv_adm1 left join sume on st_intersects(sume.geom, hrv_adm1.geom)
+-- group by  hrv_adm1.gid, hrv_adm1.name_1, hrv_adm1.geom
+-- ); 
+
+SELECT * INTO zupanijeSume from 
+(
+select hrv_adm1.gid, hrv_adm1.name_1, hrv_adm1.geom,  sum(st_area(st_intersection(sume.geom, hrv_adm1.geom)))/st_area(hrv_adm1.geom) omjer
+from hrv_adm1 left join sume on st_intersects(sume.geom, hrv_adm1.geom)
+group by  hrv_adm1.gid, hrv_adm1.name_1, hrv_adm1.geom
+) AS tempTable

@@ -1,0 +1,24 @@
+CREATE or REPLACE VIEW jednaSava as
+SELECT row_number() over () as id, waterways.name, st_union(waterways.geom) as geom
+FROM waterways
+WHERE waterways.name = 'Sava' and 
+waterways.fclass = 'river'
+GROUP by waterways.name;
+
+CREATE OR REPLACE VIEW savaSlavonija as
+SELECT 
+	row_number() over () as id,
+	'Sava u Big Slavonija' as name,
+	st_intersection(jednasava.geom, "mojeRegije".geom) as geom,
+	st_length(st_intersection(jednasava.geom, "mojeRegije".geom)) as duljina
+FROM jednasava, "mojeRegije"
+WHERE "mojeRegije".name = 'Big Slavonija';
+
+CREATE OR REPLACE VIEW savaZagreb as
+SELECT 
+	row_number() over () as id,
+	'Sava u Veliki Zagreb' as name,
+	st_intersection(jednasava.geom, "mojeRegije".geom) as geom,
+	st_length(st_intersection(jednasava.geom, "mojeRegije".geom)) as duljina
+FROM jednasava, "mojeRegije"
+WHERE "mojeRegije".name = 'Veliki Zagreb';

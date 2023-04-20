@@ -1,0 +1,16 @@
+create index bid on buildings using gist(geom);
+create table udaljenost as (
+	select 
+		buildings.*, 
+		st_distance(jednasava.geom, buildings.geom) dist
+	from jednasava,buildings 
+	order by st_distance(jednasava.geom, buildings.geom) asc
+	limit 1
+)
+
+CREATE OR REPLACE view savaSudar as
+select
+	row_number() over () as id,
+	st_buffer(jednasava.geom, udaljenost.dist) as geom
+from
+	jednasava, udaljenost

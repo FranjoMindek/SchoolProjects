@@ -1,0 +1,71 @@
+plugins {
+    id 'java'
+    id 'com.google.protobuf' version '0.8.17'
+    id 'idea'
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    jcenter()
+}
+
+dependencies {
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-jackson:2.9.0'
+    compileOnly 'com.squareup.retrofit2:retrofit:2.9.0'
+    compileOnly 'com.squareup.retrofit2:converter-jackson:2.9.0'
+
+    implementation 'io.grpc:grpc-netty-shaded:1.41.0'
+    implementation 'io.grpc:grpc-protobuf:1.41.0'
+    implementation 'io.grpc:grpc-stub:1.41.0'
+
+    compileOnly 'org.apache.tomcat:annotations-api:6.0.53'
+
+    compileOnly 'com.fasterxml.jackson.core:jackson-core:2.13.4'
+    compileOnly 'com.fasterxml.jackson.core:jackson-databind:2.13.4.2'
+
+    implementation 'org.projectlombok:lombok:1.18.24'
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+}
+
+sourceSets {
+    main {
+        // Remember to refresh gradle project in Eclipse (F5)
+        java {
+            srcDirs 'build/generated/source/proto/main/grpc'
+            srcDirs 'build/generated/source/proto/main/java'
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.17.3"
+    }
+    plugins {
+        grpc {
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.41.0'
+        }
+    }
+    generateProtoTasks {
+        all()*.plugins {
+            grpc {}
+        }
+        all().each {
+            it.group = 'build'
+        }
+    }
+}
+
+task runSenzor(type: JavaExec) {
+    group = "exec"
+    description = "Run client with JavaExecTask"
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = "hr.fer.tel.rassus.sensor.Main"
+}

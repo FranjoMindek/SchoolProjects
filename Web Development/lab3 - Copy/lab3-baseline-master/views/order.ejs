@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="./images/flower-icon.png"/>
+    <link rel="stylesheet" type="text/css" href="./vendor/normalize.css">
+    <link rel="stylesheet" type="text/css" href="./styles/main.css">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+</head>
+
+<body class="content">
+
+<%- include(`partials/header`); %>
+
+<main class="main">
+
+    <!-- INSERT CODE HERE -->
+<%  for(category of categoryRows) { %>
+        <section class="section secondary-color-bg">
+            <div class="centered-container">
+                <h1 class="decorated-title font-secondary main-color"><span class="main-color-emphasized"><%= category.name %></span> Inventory</h1>
+                <div class="separator"></div>
+            </div>
+        <%  var currentItems = new Array();
+            for(item of inventoryRows) {
+                if(item.categoryid == category.id) {
+                    currentItems.push(item);
+                } 
+            }
+            if(currentItems.length == 0){ %>
+                <div class="centered-container">
+                    <h1 class="decorated-title font-secondary main-color"> No items in this category</h1>
+                </div>
+        <%  }else{ %>
+            <div class="gallery">
+            <%  for(info of currentItems){ %>
+                <div class="photo-box" data-id="<%= info.id %>">
+                    <img class="photo-box-image" src="<%= info.imageurl %>"></img> 
+                    <div class="photo-box-title font-secondary main-color-emphasized">
+                        <a class="link" href="../item/<%= info.id %>"><%= info.name %></a>
+                    </div>
+                </div>   
+            <%  } 
+          } %>      
+            </div>
+        </section>
+<%  }   %>
+    
+</main>
+
+<%- include(`partials/footer`); %>
+
+</body>
+
+</html>
