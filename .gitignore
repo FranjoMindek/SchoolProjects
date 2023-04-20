@@ -1,4 +1,4 @@
-**/.idea
-**/.vscode
-**/build
-**/node_modules
+.idea
+.vscode
+build
+node_modules
