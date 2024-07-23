@@ -1,4 +1,6 @@
 # UniversityProjects
 
-Collection of random parts of University Projects i did.
-Contains everything from good code to bad code to non-function parts since they require excluded files (large csv files and so on).
+Collection of random parts of University Projects.
+Does not contain every projct since I have bad archiving practices. 
+
+Contains everything from good code to bad code to non-function parts.
